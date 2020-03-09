@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+	{{ block.super }}|{{ title }}
+{% endblock %}
+
+{% block body %}
+	
+	{{ journal.title }}<br>
+	{{ journal.detail }}<br>
+	{% if journal.image %}
+		<img src="{{ journal.image.url }}">
+	{% endif %}
+	{{ journal.timestamp }}<br>
+	{{ journal.last_updated }}<br><br>
+	<button id="btn">Click here to add comment</button>
+	<form method="POST" action="." id=form1 style="display: none;"> {% csrf_token %}
+		{{ comment_form.as_p }}<input type="submit" value="Post comment">
+	</form>
+	<blockquote>
+		{% for each in comments %}
+			{{ each.content  }}|{{ each.timestamp|timesince }} ago<br>
+		{% endfor %}
+	</blockquote>
+	<form method="POST">{% csrf_token %}
+		<button type="submit" name="j_del">Delete Journal</button>
+	</form>
+	<script type="text/javascript">
+		function oncli(){
+			if (document.getElementById("form1").style.display==='block'){
+				document.getElementById("form1").style.display='none'
+			}
+			else {
+				document.getElementById("form1").style.display='block';
+			}
+				
+		}
+			document.getElementById("btn").addEventListener("click",oncli);
+        
+	</script>
+
+	{% endblock %}

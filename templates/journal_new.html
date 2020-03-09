@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ title }}</title>
+</head>
+<body>
+	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+		{{ form.as_p }}<br>
+		<input type="submit" value="Create New Journal" />
+		{% for msg in messages %}
+			{% if msg.tags == "success" %}
+				{{ msg }}
+			{% endif %}
+		{% endfor %}
+	</form>
+	
+</body>
+</html>

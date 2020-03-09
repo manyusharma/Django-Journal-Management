@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ title }}</title>
+</head>
+<body>
+	<form method="GET">
+		<input type="text" name="search" 
+			   placeholder="Search journals"
+			   value="{{ request.GET.search }}">
+		<input type="submit" value="Search">
+	</form>
+	{% for journal in journals_all %}
+	<table>
+		<tr><a href="{% url 'Journals:by_id' journal.id  %}">{{ journal.id }}</a></tr><br>
+		<tr><a href="{{ journal.get_absolute_url_id }}">{{ journal.id }}</a></tr><br>
+		<tr><a href="{{ journal.get_absolute_url }}">{{ journal.slug }}</a></tr><br>
+		<tr>{{ journal.title }}</tr><br>
+		<tr>{{ journal.detail }}</tr><br>
+		<tr>{{ journal.timestamp }}</tr><br>
+		<tr>{{ journal.last_updated }}</tr><br><br>
+	</table>
+	{% endfor %}
+	<div class="pagination">
+    <span class="step-links">
+        {% if journals_all.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ journals_all.previous_page_number }}&search={{request.GET.search}}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ journals_all.number }} of {{ journals_all.paginator.num_pages }}.
+        </span>
+
+        {% if journals_all.has_next %}
+            <a href="?page={{ journals_all.next_page_number }}&search={{request.GET.search}}">next</a>
+            <a href="?page={{ journals_all.paginator.num_pages }}&search={{request.GET.search}}">last &raquo;</a>
+        {% endif %}
+    </span>
+</body>
+</html>
